@@ -2,14 +2,28 @@ package com.jose.tienda.model;
 
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "productos")
 public class Producto {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String nombre;
 	private String descripcion;
 	private String imagen;
 	private float precio;
 	private int cantidad;
+	
+	@ManyToOne
+	private Usuario usuario;
 	
 	public Producto() {}
 	
@@ -20,6 +34,28 @@ public class Producto {
 		this.imagen = imagen;
 		this.precio = precio;
 		this.cantidad = cantidad;
+	}
+
+	public Producto(long id, String nombre, String descripcion, String imagen, float precio, int cantidad) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.imagen = imagen;
+		this.precio = precio;
+		this.cantidad = cantidad;
+	}
+
+	public Producto(long id, String nombre, String descripcion, String imagen, float precio, int cantidad,
+			Usuario usuario) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.imagen = imagen;
+		this.precio = precio;
+		this.cantidad = cantidad;
+		this.usuario = usuario;
 	}
 
 	public long getId() {
@@ -70,9 +106,17 @@ public class Producto {
 		this.cantidad = cantidad;
 	}
 
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(cantidad, descripcion, id, imagen, nombre, precio);
+		return Objects.hash(cantidad, descripcion, id, imagen, nombre, precio, usuario);
 	}
 
 	@Override
@@ -86,7 +130,8 @@ public class Producto {
 		Producto other = (Producto) obj;
 		return cantidad == other.cantidad && Objects.equals(descripcion, other.descripcion) && id == other.id
 				&& Objects.equals(imagen, other.imagen) && Objects.equals(nombre, other.nombre)
-				&& Float.floatToIntBits(precio) == Float.floatToIntBits(other.precio);
+				&& Float.floatToIntBits(precio) == Float.floatToIntBits(other.precio)
+				&& Objects.equals(usuario, other.usuario);
 	}
 
 	@Override
